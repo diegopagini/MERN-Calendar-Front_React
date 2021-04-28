@@ -28,7 +28,7 @@ export const calendarReducer = (state = initialSate, action) => {
 				...state,
 				activeEvent: action.payload,
 			};
-
+		// Agregar un evento
 		case types.eventAddNew:
 			return {
 				...state,
@@ -40,13 +40,20 @@ export const calendarReducer = (state = initialSate, action) => {
 				...state,
 				activeEvent: null,
 			};
-
+		// Actualizar un evento
 		case types.eventUpdated:
 			return {
 				...state,
 				events: state.events.map((e) =>
 					e.id === action.payload.id ? action.payload : e
 				),
+			};
+		// Borrar un evento
+		case types.eventDeleted:
+			return {
+				...state,
+				events: state.events.filter((e) => e.id !== state.activeEvent.id),
+				activeEvent: null,
 			};
 
 		default:
