@@ -47,6 +47,8 @@ export const LoginScreen = () => {
 					<form onSubmit={handleLogin}>
 						<div className='form-group'>
 							<input
+								autoFocus
+								autoComplete='off'
 								type='text'
 								className='form-control'
 								placeholder='Correo'
@@ -57,6 +59,7 @@ export const LoginScreen = () => {
 						</div>
 						<div className='form-group'>
 							<input
+								autoComplete='off'
 								type='password'
 								className='form-control'
 								placeholder='Contraseña'
@@ -76,6 +79,7 @@ export const LoginScreen = () => {
 					<form onSubmit={handleRegister}>
 						<div className='form-group'>
 							<input
+								autoComplete='off'
 								type='text'
 								className='form-control'
 								placeholder='Nombre'
@@ -86,6 +90,7 @@ export const LoginScreen = () => {
 						</div>
 						<div className='form-group'>
 							<input
+								autoComplete='off'
 								type='email'
 								className='form-control'
 								placeholder='Correo'
@@ -96,6 +101,7 @@ export const LoginScreen = () => {
 						</div>
 						<div className='form-group'>
 							<input
+								autoComplete='off'
 								type='password'
 								className='form-control'
 								placeholder='Contraseña'
@@ -107,6 +113,7 @@ export const LoginScreen = () => {
 
 						<div className='form-group'>
 							<input
+								autoComplete='off'
 								type='password'
 								className='form-control'
 								placeholder='Repita la contraseña'
