@@ -82,10 +82,15 @@ const checkingFinish = () => ({
 export const startLogout = () => {
 	return (dispatch) => {
 		localStorage.clear();
+		dispatch(eventLogout());
 		dispatch(logout());
 	};
 };
 
 const logout = () => ({
 	type: types.authLogout,
+});
+
+export const eventLogout = () => ({
+	type: types.eventLogout,
 });
