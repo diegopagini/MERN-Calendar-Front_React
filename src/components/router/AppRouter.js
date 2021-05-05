@@ -28,14 +28,14 @@ export const AppRouter = () => {
 					<PublicRoute
 						exact
 						path='/login'
-						component={LoginScreen}
 						isAuthenticated={!!uid}
+						component={LoginScreen}
 					/>
 					<PrivateRoute
 						exact
 						path='/'
-						component={CalendarScreen}
 						isAuthenticated={!!uid}
+						component={CalendarScreen}
 					/>
 					<Redirect to='/' />
 				</Switch>
