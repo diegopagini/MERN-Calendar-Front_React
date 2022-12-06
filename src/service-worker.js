@@ -5,7 +5,6 @@ import { createHandlerBoundToURL, precacheAndRoute } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
 import { StaleWhileRevalidate } from 'workbox-strategies';
 
-
 // This service worker can be customized!
 // See https://developers.google.com/web/tools/workbox/modules
 // for the list of available Workbox modules, or add any other
@@ -74,7 +73,7 @@ self.addEventListener('message', (event) => {
 
 // Any other custom service worker logic can go here.
 // eslint-disable-next-line no-restricted-globals
-self.addEventListener('install', async (event) => {
+self.addEventListener('install', async () => {
 	const cache = await caches.open('cache-1');
 	await cache.addAll([
 		'https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css',
@@ -82,4 +81,24 @@ self.addEventListener('install', async (event) => {
 		'https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css',
 		'/favicon.ico',
 	]);
+});
+
+// eslint-disable-next-line no-restricted-globals
+self.addEventListener('fetch', (event) => {
+	// Any request. GET, POST, PUT...
+	if (event.request.url !== 'http://localhost:4000/api/auth/renew') return;
+
+	const resp = fetch(event.request)
+		.then((response) => {
+			// Guardar en cache la respuesta.
+			caches.open('cache-dynamic').then((cache) => cache.put(event.request));
+
+			return response.clone();
+		})
+		.catch((err) => {
+			console.log('offline response');
+			return caches.match(event.request);
+		});
+
+	event.respondeWith(resp);
 });
