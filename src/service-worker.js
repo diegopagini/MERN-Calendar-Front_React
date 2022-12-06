@@ -83,13 +83,20 @@ self.addEventListener('install', async () => {
 	]);
 });
 
+// network first with cache fallback.
+const apiOfflineFallbacks = [
+	'http://localhost:4000/api/auth/renew',
+	'http://localhost:4000/api/events',
+];
 // eslint-disable-next-line no-restricted-globals
 self.addEventListener('fetch', (event) => {
 	// Any request. GET, POST, PUT...
-	if (event.request.url !== 'http://localhost:4000/api/auth/renew') return;
+	if (!apiOfflineFallbacks.includes(event.request.url)) return;
 
 	const resp = fetch(event.request)
 		.then((response) => {
+			if (!response) return caches.match(event.request);
+
 			// Guardar en cache la respuesta.
 			caches.open('cache-dynamic').then((cache) => cache.put(event.request));
 
@@ -100,5 +107,5 @@ self.addEventListener('fetch', (event) => {
 			return caches.match(event.request);
 		});
 
-	event.respondeWith(resp);
+	event.respondWith(resp);
 });
