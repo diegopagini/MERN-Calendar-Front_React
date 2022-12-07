@@ -33,7 +33,7 @@ registerRoute(new RegExp('http://localhost:4000/api/auth/renew'), new NetworkFir
 registerRoute(new RegExp('http://localhost:4000/api/events'), new NetworkFirst());
 
 // POST Offline
-const bgSyncPlugin = new BackgroundSyncPlugin('offline-posts', {
+const bgSyncPlugin = new BackgroundSyncPlugin('offline-crud', {
 	maxRetentionTime: 24 * 60,
 });
 
@@ -43,4 +43,22 @@ registerRoute(
 		plugins: [bgSyncPlugin],
 	}),
 	'POST'
+);
+
+// DELETE Offline
+registerRoute(
+	new RegExp('http://localhost:4000/api/event/'),
+	new NetworkOnly({
+		plugins: [bgSyncPlugin],
+	}),
+	'DELETE'
+);
+
+// PUT Offline
+registerRoute(
+	new RegExp('http://localhost:4000/api/event/'),
+	new NetworkOnly({
+		plugins: [bgSyncPlugin],
+	}),
+	'PUT'
 );
