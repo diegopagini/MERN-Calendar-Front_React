@@ -2,12 +2,16 @@
 
 // eslint-disable-next-line no-undef
 importScripts('https://storage.googleapis.com/workbox-cdn/releases/6.2.0/workbox-sw.js');
+// eslint-disable-next-line no-undef
+workbox.loadModule('workbox-background-sync');
 // eslint-disable-next-line no-restricted-globals, no-undef
 workbox.precaching.precacheAndRoute(self.__WB_MANIFEST);
 // eslint-disable-next-line no-undef
 const { registerRoute } = workbox.routing;
 // eslint-disable-next-line no-undef
-const { CacheFirst, NetworkFirst } = workbox.strategies;
+const { CacheFirst, NetworkFirst, NetworkOnly } = workbox.strategies;
+// eslint-disable-next-line no-undef
+const { BackgroundSyncPlugin } = workbox.backgroundSync;
 
 registerRoute(
 	new RegExp('https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css'),
@@ -27,3 +31,16 @@ registerRoute(
 registerRoute(new RegExp('http://localhost:4000/api/auth/renew'), new NetworkFirst());
 
 registerRoute(new RegExp('http://localhost:4000/api/events'), new NetworkFirst());
+
+// POST Offline
+const bgSyncPlugin = new BackgroundSyncPlugin('offline-posts', {
+	maxRetentionTime: 24 * 60,
+});
+
+registerRoute(
+	new RegExp('http://localhost:4000/api/event'),
+	new NetworkOnly({
+		plugins: [bgSyncPlugin],
+	}),
+	'POST'
+);
